@@ -305,9 +305,9 @@ export default function App() {
               {[
                 { name: "Pedro Andrade", img: "/pedroa.jpg" },
                 { name: "Allanzord", img: "/allanzord.jpg" },
-                { name: "Denis Pereira", img: "/denis pereira.jpg" },
-                { name: "Lucas Rego", img: "/lucas rego.jpg" },
-                { name: "Dairo Junior", img: "/dairo junior.jpg" },
+                { name: "Denis Pereira", img: "/denispereira.jpg" },
+                { name: "Lucas Rego", img: "/lucasrego.jpg" },
+                { name: "Dairo Junior", img: "/dairojunior.jpg" },
               ].map((player, i) => (
                 <motion.div 
                   key={i}
