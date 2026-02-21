@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Inter Tight", sans-serif;
+  
+  --text-h1: 205px;
+  --text-h2: 109.654px;
+  --text-body: 14px;
+
+  --color-primary: hsl(168, 48%, 65%);
+  --color-primary-foreground: hsl(271, 46%, 5%);
+  --color-destructive: hsl(0, 80%, 65%);
+  --color-bg: hsl(271, 46%, 5%);
+  --color-card: hsl(271, 40%, 8%);
+  --color-secondary: hsl(271, 35%, 13%);
+  --color-foreground: hsl(0, 0%, 95%);
+  --color-muted-foreground: hsl(271, 10%, 55%);
+  --color-border: hsl(271, 30%, 15%);
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-foreground font-sans antialiased overflow-x-hidden;
+    font-size: var(--text-body);
+    background-image: 
+      linear-gradient(to right, hsla(271, 30%, 40%, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, hsla(271, 30%, 40%, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tighter;
+  }
+}
+
+@layer utilities {
+  .text-h1 {
+    font-size: clamp(4rem, 15vw, var(--text-h1));
+    line-height: 0.85;
+  }
+  .text-h2 {
+    font-size: clamp(2.5rem, 8vw, var(--text-h2));
+    line-height: 0.9;
+  }
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1rem;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
