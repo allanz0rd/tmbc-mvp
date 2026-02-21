@@ -303,11 +303,11 @@ export default function App() {
             {/* Stories Section */}
             <div className="flex justify-center gap-8 mb-20 overflow-x-auto pb-4 no-scrollbar">
               {[
-                { name: "Pedro Andrade", seed: "pedro-andrade" },
-                { name: "Allanzord", seed: "allanzord" },
-                { name: "Denis Pereira", seed: "denis-pereira" },
-                { name: "Lucas Rego", seed: "lucas-rego" },
-                { name: "Dairo Junior", seed: "dairo-junior" },
+                { name: "Pedro Andrade", img: "/pedroa.jpg" },
+                { name: "Allanzord", img: "/allanzord.jpg" },
+                { name: "Denis Pereira", img: "/denis pereira.jpg" },
+                { name: "Lucas Rego", img: "/lucas rego.jpg" },
+                { name: "Dairo Junior", img: "/dairo junior.jpg" },
               ].map((player, i) => (
                 <motion.div 
                   key={i}
@@ -320,10 +320,9 @@ export default function App() {
                   <div className="w-28 h-28 rounded-full p-[3px] bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] shadow-lg shadow-primary/10">
                     <div className="w-full h-full rounded-full border-2 border-bg overflow-hidden bg-card">
                       <img 
-                        src={`https://picsum.photos/seed/${player.seed}/200/200`} 
+                        src={player.img} 
                         alt={player.name} 
                         className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
                       />
                     </div>
                   </div>
