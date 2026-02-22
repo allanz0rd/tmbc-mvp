@@ -4,6 +4,11 @@
  */
 
 import { motion } from "motion/react";
+import pedroaImg from './assets/pedroa.jpg';
+import allanzordImg from './assets/allanzord.jpg';
+import denispereiraImg from './assets/denispereira.jpg';
+import lucasregoImg from './assets/lucasrego.jpg';
+import dairojuniorImg from './assets/dairojunior.jpg';
 import { 
   ArrowUpRight, 
   CheckCircle2, 
@@ -303,11 +308,11 @@ export default function App() {
             {/* Stories Section */}
             <div className="flex justify-center gap-8 mb-20 overflow-x-auto pb-4 no-scrollbar">
               {[
-                { name: "Pedro Andrade", img: "/pedroa.jpg" },
-                { name: "Allanzord", img: "/allanzord.jpg" },
-                { name: "Denis Pereira", img: "/denispereira.jpg" },
-                { name: "Lucas Rego", img: "/lucasrego.jpg" },
-                { name: "Dairo Junior", img: "/dairojunior.jpg" },
+                { name: "Pedro Andrade", img: pedroaImg },
+                { name: "Allanzord", img: allanzordImg },
+                { name: "Denis Pereira", img: denispereiraImg },
+                { name: "Lucas Rego", img: lucasregoImg },
+                { name: "Dairo Junior", img: dairojuniorImg },
               ].map((player, i) => (
                 <motion.div 
                   key={i}
