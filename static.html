@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Media Buyer Club</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:            hsl(168, 48%, 65%);
+      --primary-fg:         hsl(271, 46%, 5%);
+      --destructive:        hsl(0, 80%, 65%);
+      --bg:                 hsl(271, 46%, 5%);
+      --card:               hsl(271, 40%, 8%);
+      --secondary:          hsl(271, 35%, 13%);
+      --fg:                 hsl(0, 0%, 95%);
+      --muted:              hsl(271, 10%, 55%);
+      --border:             hsl(271, 30%, 15%);
+      --font-sans:          "Inter", ui-sans-serif, system-ui, sans-serif;
+      --font-heading:       "Inter Tight", sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      background-image:
+        linear-gradient(to right, hsla(271, 30%, 40%, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, hsla(271, 30%, 40%, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      letter-spacing: -0.04em;
+    }
+
+    /* Utility */
+    .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+    .text-h1 { font-size: clamp(4rem, 15vw, 205px); line-height: 0.85; }
+    .text-h2 { font-size: clamp(2.5rem, 8vw, 109px); line-height: 0.9; }
+    .uppercase { text-transform: uppercase; }
+    .tracking-tighter { letter-spacing: -0.04em; }
+    .tracking-widest { letter-spacing: 0.12em; }
+
+    /* Scroll-reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ─── HEADER ─── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      transition: background 0.3s, padding 0.3s, border-color 0.3s;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid transparent;
+    }
+    header.scrolled {
+      background: hsla(271, 46%, 5%, 0.8);
+      backdrop-filter: blur(12px);
+      padding: 1rem 0;
+      border-color: var(--border);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 0.5rem; }
+    .logo-mark {
+      width: 2rem; height: 2rem;
+      background: var(--primary);
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark span {
+      color: var(--primary-fg);
+      font-weight: 900;
+      font-size: 10px;
+      font-family: var(--font-heading);
+    }
+    .logo-text {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      font-size: 1.25rem;
+      color: var(--primary);
+    }
+    .btn-closed {
+      background: var(--destructive);
+      color: var(--fg);
+      border: none;
+      padding: 0.625rem 1.5rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s;
+      font-family: var(--font-heading);
+      letter-spacing: -0.02em;
+    }
+    .btn-closed:hover { transform: scale(1.05); }
+    .btn-closed:active { transform: scale(0.95); }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      padding: 10rem 0 5rem;
+      overflow: hidden;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 0.375rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid hsla(168, 48%, 65%, 0.2);
+      background: hsla(168, 48%, 65%, 0.05);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+    .hero-title-block { margin-bottom: 3rem; }
+    .hero-title-block .line1 { color: var(--primary); }
+    .hero-title-block .line2 { color: hsla(0, 0%, 95%, 0.1); margin-top: -1rem; }
+    @media (min-width: 768px) { .hero-title-block .line2 { margin-top: -2rem; } }
+    .hero-divider {
+      width: 6rem; height: 4px;
+      background: var(--primary);
+      border-radius: 9999px;
+      margin: 1rem auto 0;
+    }
+    .hero-sub {
+      font-size: 1.25rem;
+      color: var(--muted);
+      max-width: 48rem;
+      margin: 0 auto 3rem;
+      line-height: 1.65;
+    }
+    @media (min-width: 768px) { .hero-sub { font-size: 1.5rem; } }
+    .hero-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    @media (min-width: 768px) { .hero-cta { flex-direction: row; } }
+    .btn-hero {
+      position: relative;
+      background: var(--destructive);
+      color: var(--fg);
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 9999px;
+      font-size: 1.125rem;
+      font-weight: 900;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-heading);
+      letter-spacing: -0.02em;
+      transition: transform 0.15s;
+    }
+    .btn-hero:hover { transform: scale(1.05); }
+    .btn-hero:active { transform: scale(0.95); }
+    .hero-price-info { text-align: left; }
+    .hero-price-label {
+      font-size: 0.75rem; font-weight: 700;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em;
+    }
+    .hero-price { font-size: 1.25rem; font-weight: 900; color: var(--primary); }
+    .hero-glow {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1000px; height: 1000px;
+      background: hsla(168, 48%, 65%, 0.05);
+      border-radius: 50%;
+      filter: blur(120px);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Hero entry animation */
+    .hero-inner {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: heroFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+      max-width: 72rem; margin: 0 auto;
+    }
+    @keyframes heroFadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SOCIAL PROOF BAR ─── */
+    .proof-bar {
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: hsla(271, 40%, 8%, 0.5);
+    }
+    .proof-bar-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      opacity: 0.4;
+      filter: grayscale(1);
+    }
+    @media (min-width: 768px) { .proof-bar-inner { gap: 6rem; } }
+    .proof-brand {
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--muted);
+      font-family: var(--font-heading);
+    }
+
+    /* ─── COMMON SECTION ─── */
+    .section { padding: 8rem 0; }
+    .section-card { padding: 8rem 0; background: hsla(271, 40%, 8%, 0.3); }
+
+    /* ─── CONVITE ─── */
+    .convite-grid {
+      display: grid;
+      gap: 5rem;
+      align-items: start;
+    }
+    @media (min-width: 768px) { .convite-grid { grid-template-columns: 1fr 1fr; gap: 5rem; } }
+    .convite-title {
+      font-size: clamp(2.5rem, 8vw, 109px);
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      line-height: 0.9;
+    }
+    .convite-title span { color: hsla(168, 48%, 65%, 0.2); }
+    .badge-row {
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem;
+    }
+    .badge-icon {
+      width: 3rem; height: 3rem;
+      border-radius: 50%;
+      background: hsla(168, 48%, 65%, 0.1);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .badge-icon svg { width: 1.5rem; height: 1.5rem; color: var(--primary); }
+    .badge-label {
+      font-weight: 700; font-size: 0.75rem;
+      text-transform: uppercase; letter-spacing: 0.12em; color: var(--primary);
+    }
+    .convite-text { font-size: 1.125rem; color: var(--muted); line-height: 1.8; }
+    .convite-text p + p { margin-top: 2rem; }
+    .convite-author {
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+    .convite-author .name { font-weight: 900; color: var(--primary); font-size: 1.25rem; }
+    .convite-author .role { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+
+    /* ─── WARNING ─── */
+    .warning-title {
+      font-size: clamp(2rem, 7vw, 80px);
+      font-weight: 900;
+      text-transform: uppercase;
+      color: var(--destructive);
+      margin-bottom: 1.5rem;
+      line-height: 1;
+    }
+    .warning-title span { color: hsla(0, 80%, 65%, 0.2); }
+    .warning-sub { font-size: 1.25rem; color: var(--muted); }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-top: 5rem;
+    }
+    @media (min-width: 768px) { .cards-grid { grid-template-columns: repeat(4, 1fr); } }
+    .feature-card {
+      padding: 2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      transition: border-color 0.2s;
+    }
+    .feature-card:hover { border-color: hsla(0, 80%, 65%, 0.3); }
+    .feature-card svg {
+      width: 2.5rem; height: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: hsla(0, 80%, 65%, 0.2);
+      transition: color 0.2s;
+    }
+    .feature-card:hover svg { color: var(--destructive); }
+    .feature-card h3 { font-size: 1.25rem; font-weight: 900; text-transform: uppercase; margin-bottom: 1rem; }
+    .feature-card p { color: var(--muted); font-size: 0.875rem; line-height: 1.6; }
+
+    /* ─── MASTERMIND ─── */
+    .mastermind-wrapper {
+      display: grid;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 2.5rem;
+      overflow: hidden;
+    }
+    @media (min-width: 768px) { .mastermind-wrapper { grid-template-columns: 1fr 1fr; } }
+    .mastermind-content { padding: 3rem; }
+    @media (min-width: 768px) { .mastermind-content { padding: 5rem; } }
+    .mastermind-tag { font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3em; color: var(--muted); margin-bottom: 1.5rem; display: block; }
+    .mastermind-title { font-size: clamp(2rem, 6vw, 80px); font-weight: 900; text-transform: uppercase; margin-bottom: 2rem; line-height: 1; }
+    .mastermind-title span { color: hsla(168, 48%, 65%, 0.2); }
+    .mastermind-desc { font-size: 1.25rem; color: var(--muted); line-height: 1.65; }
+    .mastermind-visual {
+      position: relative;
+      min-height: 500px;
+      background: hsla(271, 35%, 13%, 0.5);
+    }
+    .stats-grid {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .stats-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      padding: 3rem;
+      width: 100%;
+    }
+    .stat-box {
+      aspect-ratio: 1;
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-radius: 1.5rem;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 2rem;
+    }
+    .stat-box .number { font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; }
+    .stat-box .label { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.4; }
+    .stat-box-alt {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+    }
+    .stat-col { display: flex; flex-direction: column; gap: 1rem; }
+    .stat-col.offset { padding-top: 3rem; }
+
+    /* ─── ROADMAP ─── */
+    .roadmap-title { text-transform: uppercase; font-size: clamp(2.5rem, 8vw, 109px); font-weight: 900; line-height: 0.9; }
+    .roadmap-title span { color: hsla(168, 48%, 65%, 0.2); }
+    .timeline { position: relative; max-width: 56rem; margin: 0 auto; }
+    .timeline-line {
+      position: absolute;
+      left: 0.375rem;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    @media (min-width: 768px) {
+      .timeline-line { left: 50%; transform: translateX(-50%); }
+    }
+    .timeline-step {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-bottom: 5rem;
+      padding-left: 2.5rem;
+    }
+    @media (min-width: 768px) {
+      .timeline-step { flex-direction: row; padding-left: 0; }
+      .timeline-step.even { flex-direction: row-reverse; }
+    }
+    .timeline-dot {
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      width: 1rem; height: 1rem;
+      background: var(--primary);
+      border-radius: 50%;
+      border: 4px solid var(--bg);
+    }
+    @media (min-width: 768px) {
+      .timeline-dot { left: 50%; transform: translateX(-50%); }
+    }
+    .timeline-half { flex: 1; }
+    .timeline-card {
+      padding: 2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+    }
+    .timeline-card svg { width: 2rem; height: 2rem; margin-bottom: 1rem; color: hsla(168, 48%, 65%, 0.2); }
+    .timeline-card h3 { font-size: 1.25rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .timeline-card p { color: var(--muted); font-size: 0.875rem; }
+    .timeline-spacer { width: 3rem; flex-shrink: 0; display: none; }
+    @media (min-width: 768px) { .timeline-spacer { display: block; } }
+
+    /* ─── LEGENDS ─── */
+    .legends-title { font-size: clamp(2.5rem, 8vw, 109px); font-weight: 900; text-transform: uppercase; line-height: 0.9; }
+    .legends-title span { color: hsla(168, 48%, 65%, 0.2); }
+    .legends-sub { font-size: 1.25rem; color: var(--muted); margin-top: 1rem; }
+    .stories-row {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 5rem 0;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      scrollbar-width: none;
+    }
+    .stories-row::-webkit-scrollbar { display: none; }
+    .story-item {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 0.75rem;
+      flex-shrink: 0;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .story-item.visible { opacity: 1; transform: scale(1); }
+    .story-ring {
+      width: 7rem; height: 7rem;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, #f9ce34, #ee2a7b, #6228d7);
+      box-shadow: 0 8px 32px hsla(168, 48%, 65%, 0.1);
+    }
+    .story-ring-inner {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      overflow: hidden;
+      background: var(--card);
+    }
+    .story-ring-inner img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .story-name {
+      font-size: 0.875rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+    }
+    .info-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    @media (min-width: 768px) { .info-cards { grid-template-columns: repeat(3, 1fr); } }
+    .info-card {
+      padding: 2.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .info-card-plus {
+      position: absolute; top: 0; right: 0;
+      padding: 2rem;
+      opacity: 0.1;
+      color: var(--primary);
+      transition: opacity 0.2s;
+    }
+    .info-card:hover .info-card-plus { opacity: 0.2; }
+    .info-card h3 { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .info-card .role { font-size: 0.625rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1.5rem; display: block; }
+    .info-card p { color: var(--muted); line-height: 1.65; }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials-title { font-size: clamp(2.5rem, 8vw, 90px); font-weight: 900; text-transform: uppercase; }
+    .testimonials-title span { color: hsla(168, 48%, 65%, 0.2); }
+    .masonry {
+      column-count: 1;
+      column-gap: 1.5rem;
+      margin-top: 5rem;
+    }
+    @media (min-width: 768px) { .masonry { column-count: 2; } }
+    @media (min-width: 1024px) { .masonry { column-count: 3; } }
+    .testimonial-card {
+      break-inside: avoid;
+      margin-bottom: 1.5rem;
+      padding: 2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+    }
+    .testimonial-card blockquote {
+      font-size: 1.125rem;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      line-height: 1.65;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+    .author-avatar {
+      width: 2rem; height: 2rem;
+      border-radius: 50%;
+      background: hsla(168, 48%, 65%, 0.1);
+      flex-shrink: 0;
+    }
+    .author-name { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+
+    /* ─── CTA ─── */
+    .cta-section { padding: 10rem 0; position: relative; overflow: hidden; text-align: center; }
+    .cta-box {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 3rem;
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-radius: 2.5rem;
+      position: relative; z-index: 1;
+    }
+    @media (min-width: 768px) { .cta-box { padding: 6rem; } }
+    .cta-title { font-size: clamp(2rem, 7vw, 80px); font-weight: 900; text-transform: uppercase; margin-bottom: 2rem; line-height: 1; }
+    .cta-sub { font-size: 1.25rem; font-weight: 700; opacity: 0.6; margin-bottom: 3rem; }
+    .btn-cta {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      background: var(--bg);
+      color: var(--fg);
+      border: none;
+      padding: 1.25rem 3rem;
+      border-radius: 9999px;
+      font-size: 1.25rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.15s;
+      font-family: var(--font-heading);
+      letter-spacing: -0.02em;
+    }
+    .btn-cta:hover { transform: scale(1.05); }
+    .btn-cta:active { transform: scale(0.95); }
+    .cta-glow {
+      position: absolute;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 100%; height: 50%;
+      background: hsla(168, 48%, 65%, 0.1);
+      filter: blur(120px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ─── FAQ ─── */
+    .faq-title { font-size: clamp(2.5rem, 8vw, 109px); font-weight: 900; text-transform: uppercase; line-height: 0.9; }
+    .faq-sub { font-size: 1.25rem; color: var(--muted); margin-top: 0.75rem; }
+    .faq-list { margin-top: 5rem; max-width: 56rem; }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2rem;
+      margin-bottom: 2rem;
+      cursor: pointer;
+    }
+    .faq-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; gap: 1rem; }
+    .faq-q {
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .faq-item:hover .faq-q { color: var(--primary); }
+    .faq-icon { width: 1.5rem; height: 1.5rem; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+    .faq-item:hover .faq-icon { transform: rotate(45deg); }
+    .faq-a { color: var(--muted); line-height: 1.7; max-width: 42rem; font-size: 1rem; }
+
+    /* ─── SVG ICONS (inline) ─── */
+    .icon { display: inline-block; vertical-align: middle; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <header id="site-header">
+    <div class="container header-inner">
+      <div class="logo">
+        <div class="logo-mark"><span>TMBC</span></div>
+        <span class="logo-text uppercase tracking-tighter">THE MEDIA BUYER CLUB</span>
+      </div>
+      <button class="btn-closed">INGRESSO ENCERRADO</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ═══ HERO ═══ -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-inner">
+          <span class="hero-badge">Acesso Restrito</span>
+
+          <div class="hero-title-block">
+            <div class="text-h1 font-heading" style="font-family:var(--font-heading);font-weight:900;letter-spacing:-0.04em;display:flex;flex-direction:column;align-items:center;">
+              <span class="line1">THE MEDIA</span>
+              <span class="line2">BUYER CLUB</span>
+            </div>
+            <div class="hero-divider"></div>
+          </div>
+
+          <p class="hero-sub">
+            Estratégias de Direct Response e Compra de Mídia de Alta Performance no Mercado Americano, Global e BR.
+          </p>
+
+          <div class="hero-cta">
+            <button class="btn-hero">INGRESSO ENCERRADO</button>
+            <div class="hero-price-info">
+              <p class="hero-price-label">Novas vagas em breve</p>
+              <p class="hero-price">R$ 1.997</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-glow"></div>
+    </section>
+
+    <!-- ═══ SOCIAL PROOF BAR ═══ -->
+    <section class="proof-bar">
+      <div class="container">
+        <div class="proof-bar-inner">
+          <span class="proof-brand">META ADS</span>
+          <span class="proof-brand">GOOGLE ADS</span>
+          <span class="proof-brand">TIKTOK ADS</span>
+          <span class="proof-brand">YOUTUBE ADS</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CONVITE ═══ -->
+    <section id="convite" class="section" style="background:var(--bg);">
+      <div class="container">
+        <div class="convite-grid">
+          <!-- Left -->
+          <div class="reveal">
+            <h2 class="convite-title">
+              UM RECADO<br />
+              <span>DIRETO DO ALLAN</span>
+            </h2>
+            <div class="badge-row">
+              <div class="badge-icon">
+                <!-- Zap icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+              </div>
+              <p class="badge-label">Escrito 100% à mão. Sem IA.</p>
+            </div>
+          </div>
+          <!-- Right -->
+          <div class="convite-text reveal">
+            <p>
+              The Media Buyer Club era ser um simples "último produto" de uma esteira educacional. Tomei muito cuidado nas palavras e no posicionamento para não parecer apenas mais um mecanismo falho.
+            </p>
+            <p>
+              Eu esperava no máximo 30 pessoas, mas no primeiro dia já tinha mais de 50. Aqui estão verdadeiras lendas. Mentores meus, que eu via distantes em podcasts do VTurb. São mais de bilhões em mídia paga reunidos.
+            </p>
+            <p>
+              Um projeto que era para ser o produto final da minha esteira, agora é um produto do próprio Direct Response. Não consigo mais olhar para o TMBC como meu, mas sim como nosso.
+            </p>
+            <div class="convite-author">
+              <p class="name">Allan Luiz</p>
+              <p class="role">Founder &amp; Media Buyer</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ WARNING ═══ -->
+    <section class="section-card">
+      <div class="container">
+        <div class="reveal" style="text-align:center;margin-bottom:5rem;">
+          <h2 class="warning-title">
+            PARE AGORA SE VOCÊ<br /><span>FOR INICIANTE</span>
+          </h2>
+          <p class="warning-sub">O TMBC não é uma escola. Não é uma formação.</p>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <div class="feature-card reveal">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <h3>Sem Babá</h3>
+            <p>Você não precisa de uma "babá" para o seu tráfego.</p>
+          </div>
+          <!-- Card 2 -->
+          <div class="feature-card reveal reveal-delay-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
+            </svg>
+            <h3>Sem Promessas</h3>
+            <p>Você não espera promessas vazias de "6, 7, 8d".</p>
+          </div>
+          <!-- Card 3 -->
+          <div class="feature-card reveal reveal-delay-2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            <h3>Sem Básico</h3>
+            <p>Você não quer aprender a "subir campanha" no Gerenciador.</p>
+          </div>
+          <!-- Card 4 -->
+          <div class="feature-card reveal reveal-delay-3">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <h3>Sem Garantias</h3>
+            <p>Você não busca garantia de emprego em grandes empresas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ MASTERMIND ═══ -->
+    <section id="objetivo" class="section" style="position:relative;overflow:hidden;">
+      <div class="container">
+        <div class="mastermind-wrapper reveal">
+          <div class="mastermind-content">
+            <span class="mastermind-tag">/Reliable /Partner</span>
+            <h2 class="mastermind-title">
+              O MASTERMIND<br /><span>DEFINITIVO</span>
+            </h2>
+            <p class="mastermind-desc">
+              Conhecimento, Mastermind, Networking. Construído pela inteligência coletiva de quem está no campo de batalha. Transformando o Brasil no melhor país de Media Buying do mundo.
+            </p>
+          </div>
+
+          <div class="mastermind-visual">
+            <div class="stats-grid">
+              <div class="stats-inner">
+                <div class="stat-col">
+                  <div class="stat-box">
+                    <p class="number">200+</p>
+                    <p class="label">Membros</p>
+                  </div>
+                  <div class="stat-box-alt" style="aspect-ratio:4/3;"></div>
+                </div>
+                <div class="stat-col offset">
+                  <div class="stat-box-alt" style="aspect-ratio:4/3;"></div>
+                  <div class="stat-box">
+                    <p class="number" style="color:var(--primary);color:var(--primary-fg);">+3bi</p>
+                    <p class="label">Em mídia paga</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ROADMAP 2026 ═══ -->
+    <section id="roadmap" class="section-card">
+      <div class="container">
+        <div class="reveal" style="text-align:center;margin-bottom:6rem;">
+          <h2 class="roadmap-title">ROADMAP <span>2026</span></h2>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-line"></div>
+
+          <!-- Step 1 (even — card on right) -->
+          <div class="timeline-step even reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-half"></div>
+            <div class="timeline-spacer"></div>
+            <div class="timeline-half">
+              <div class="timeline-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <h3>Grupo Fechado WhatsApp</h3>
+                <p>Para troca de ideia diária e insights em tempo real.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 (odd — card on left) -->
+          <div class="timeline-step reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-half">
+              <div class="timeline-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <h3>Networking no Discord</h3>
+                <p>Ambiente sem ruído, apenas alto nível, onde as calls acontecem.</p>
+              </div>
+            </div>
+            <div class="timeline-spacer"></div>
+            <div class="timeline-half"></div>
+          </div>
+
+          <!-- Step 3 (even) -->
+          <div class="timeline-step even reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-half"></div>
+            <div class="timeline-spacer"></div>
+            <div class="timeline-half">
+              <div class="timeline-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+                <h3>Calls de Elite</h3>
+                <p>Encontros com convidados que dominam o mercado global.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 (odd) -->
+          <div class="timeline-step reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-half">
+              <div class="timeline-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
+                </svg>
+                <h3>Estudos de Caso Reais</h3>
+                <p>Alunos que aplicaram o método em Info, Nutra, Leads e Drop.</p>
+              </div>
+            </div>
+            <div class="timeline-spacer"></div>
+            <div class="timeline-half"></div>
+          </div>
+
+          <!-- Step 5 (even) -->
+          <div class="timeline-step even reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-half"></div>
+            <div class="timeline-spacer"></div>
+            <div class="timeline-half">
+              <div class="timeline-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <h3>Parceiros de Qualidade</h3>
+                <p>Acesso a copywriters, editores e gestores validados.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ THE LEGENDS ═══ -->
+    <section class="section" style="background:var(--bg);position:relative;">
+      <div class="container">
+        <div class="reveal">
+          <h2 class="legends-title">THE <span>LEGENDS</span></h2>
+          <p class="legends-sub">Mais de bilhões em mídia paga reunidos em um só lugar.</p>
+        </div>
+
+        <!-- Stories -->
+        <div class="stories-row">
+          <div class="story-item reveal">
+            <div class="story-ring">
+              <div class="story-ring-inner">
+                <img src="/pedroa.jpg" alt="Pedro Andrade" />
+              </div>
+            </div>
+            <span class="story-name">Pedro Andrade</span>
+          </div>
+          <div class="story-item reveal reveal-delay-1">
+            <div class="story-ring">
+              <div class="story-ring-inner">
+                <img src="/allanzord.jpg" alt="Allanzord" />
+              </div>
+            </div>
+            <span class="story-name">Allanzord</span>
+          </div>
+          <div class="story-item reveal reveal-delay-2">
+            <div class="story-ring">
+              <div class="story-ring-inner">
+                <img src="/denispereira.jpg" alt="Denis Pereira" />
+              </div>
+            </div>
+            <span class="story-name">Denis Pereira</span>
+          </div>
+          <div class="story-item reveal reveal-delay-3">
+            <div class="story-ring">
+              <div class="story-ring-inner">
+                <img src="/lucasrego.jpg" alt="Lucas Rego" />
+              </div>
+            </div>
+            <span class="story-name">Lucas Rego</span>
+          </div>
+          <div class="story-item reveal reveal-delay-4">
+            <div class="story-ring">
+              <div class="story-ring-inner">
+                <img src="/dairojunior.jpg" alt="Dairo Junior" />
+              </div>
+            </div>
+            <span class="story-name">Dairo Junior</span>
+          </div>
+        </div>
+
+        <!-- Info Cards -->
+        <div class="info-cards">
+          <div class="info-card reveal">
+            <div class="info-card-plus">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </div>
+            <h3>Direct Response</h3>
+            <span class="role">Estratégia Global</span>
+            <p>Foco total em ROI e escala agressiva no mercado americano, global e brasileiro.</p>
+          </div>
+          <div class="info-card reveal reveal-delay-1">
+            <div class="info-card-plus">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </div>
+            <h3>Media Buying</h3>
+            <span class="role">Alta Performance</span>
+            <p>Domínio completo das principais fontes de tráfego do mundo.</p>
+          </div>
+          <div class="info-card reveal reveal-delay-2">
+            <div class="info-card-plus">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </div>
+            <h3>Mastermind</h3>
+            <span class="role">Inteligência Coletiva</span>
+            <p>Networking real com quem realmente está no campo de batalha.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ TESTIMONIALS ═══ -->
+    <section class="section-card">
+      <div class="container">
+        <div class="reveal" style="text-align:center;">
+          <h2 class="testimonials-title">PROVA <span>SOCIAL</span></h2>
+        </div>
+
+        <div class="masonry">
+          <div class="testimonial-card reveal">
+            <blockquote>"O TMBC mudou minha percepção sobre o que é tráfego de verdade. O nível das discussões no Discord é surreal."</blockquote>
+            <div class="testimonial-author">
+              <div class="author-avatar"></div>
+              <span class="author-name">Gestor de Tráfego @ Info</span>
+            </div>
+          </div>
+          <div class="testimonial-card reveal reveal-delay-1">
+            <blockquote>"Finalmente um lugar sem promessas de 6 em 7, apenas estratégia pura e dura."</blockquote>
+            <div class="testimonial-author">
+              <div class="author-avatar"></div>
+              <span class="author-name">Media Buyer @ Nutra</span>
+            </div>
+          </div>
+          <div class="testimonial-card reveal reveal-delay-2">
+            <blockquote>"As calls com convidados de elite valem o investimento de um ano inteiro."</blockquote>
+            <div class="testimonial-author">
+              <div class="author-avatar"></div>
+              <span class="author-name">Founder @ Drop Global</span>
+            </div>
+          </div>
+          <div class="testimonial-card reveal">
+            <blockquote>"O networking aqui é o que realmente faz a diferença. Estar perto de quem fatura milhões muda o jogo."</blockquote>
+            <div class="testimonial-author">
+              <div class="author-avatar"></div>
+              <span class="author-name">Estrategista @ Direct Response</span>
+            </div>
+          </div>
+          <div class="testimonial-card reveal reveal-delay-1">
+            <blockquote>"Sem babá, sem enrolação. Conteúdo direto ao ponto para quem já sabe o que está fazendo."</blockquote>
+            <div class="testimonial-author">
+              <div class="author-avatar"></div>
+              <span class="author-name">Performance Lead</span>
+            </div>
+          </div>
+          <div class="testimonial-card reveal reveal-delay-2">
+            <blockquote>"O roadmap para 2026 está incrível. Mal posso esperar pelas próximas atualizações."</blockquote>
+            <div class="testimonial-author">
+              <div class="author-avatar"></div>
+              <span class="author-name">Afiliado Elite</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CTA ═══ -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-box reveal">
+          <h2 class="cta-title">PRONTO PARA O<br />PRÓXIMO NÍVEL?</h2>
+          <p class="cta-sub">O Mastermind para os melhores Media Buyers do Brasil.</p>
+          <button class="btn-cta">
+            INGRESSO ENCERRADO
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="cta-glow"></div>
+    </section>
+
+    <!-- ═══ FAQ ═══ -->
+    <section id="faq" class="section" style="background:var(--bg);">
+      <div class="container">
+        <div class="reveal" style="margin-bottom:5rem;">
+          <h2 class="faq-title">FAQ</h2>
+          <p class="faq-sub">Dúvidas frequentes sobre o clube.</p>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item reveal">
+            <div class="faq-row">
+              <h3 class="faq-q">O TMBC é para iniciantes?</h3>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </div>
+            <p class="faq-a">Não. O The Media Buyer Club não é uma escola ou formação básica. É um ambiente para quem já está no campo de batalha.</p>
+          </div>
+
+          <div class="faq-item reveal reveal-delay-1">
+            <div class="faq-row">
+              <h3 class="faq-q">Qual o valor do investimento?</h3>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </div>
+            <p class="faq-a">O ingresso para o clube é de R$ 1.997. No momento, as vagas estão encerradas.</p>
+          </div>
+
+          <div class="faq-item reveal reveal-delay-2">
+            <div class="faq-row">
+              <h3 class="faq-q">O que vou encontrar lá dentro?</h3>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </div>
+            <p class="faq-a">Networking de alto nível, calls com convidados de elite, estudos de caso reais e grupos fechados no WhatsApp e Discord.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 The Media Buyer Club. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky header
+    const header = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Scroll-reveal with IntersectionObserver
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
